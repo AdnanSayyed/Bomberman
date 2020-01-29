@@ -8,14 +8,15 @@ using UnityEngine.SceneManagement;
 
 namespace Common
 {
-    public class GameManager : Singleton<GameManager>
+    public class GameManager :MonoBehaviour
     {
-        
+        public static GameManager Instance;
+
         public event Action<bool> gameStatus;
         public event Action updateScore;
         public event Action restartGame;
 
-        [Range(3, 10)]
+        [Range(1, 10)]
         public int enemyCount;
         public Vector2 gridSize;
         public UIController uiController;
@@ -34,6 +35,12 @@ namespace Common
         // Start is called before the first frame update
         void Start()
         {
+            if (Instance != null)
+                Destroy(gameObject);
+            else
+                Instance = this;
+
+
             uiController.SetGameManager(this);
             playerManager = new PlayerManager(playerPrefab, bombPrefab, this);
             enemyManager = new EnemyManager(enemyPrefab, this,enemyParent);

@@ -4,7 +4,7 @@ using EnemySystem;
 
 namespace PlayerSystem
 {
-    public class Player : MonoBehaviour , IDamage
+    public class Player : StateMachine , IDamage
     {
         [SerializeField] private float moveSpeed;
         [SerializeField] private Rigidbody2D myBody;

@@ -130,6 +130,23 @@ namespace EnemySystem
             Vector2 diff = endPos - startPos;
             float zRot = Mathf.Atan2(diff.y, diff.x) * Mathf.Rad2Deg;
             enemySprite.rotation = Quaternion.Euler(0, 0, zRot + 90);
+            switch (zRot)
+            {
+                case 90:
+                    print("90");
+                    print("Back");
+                    break;
+                case 180:
+                    print("180");
+                    print("Side");
+                    break;
+                case 270:
+                    print("270");
+                    print("down");
+                    break;
+                default:
+                    break;
+            }
         }
 
     }
