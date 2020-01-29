@@ -47,10 +47,6 @@ namespace Common
 
         public void UpdateScore() => updateScore?.Invoke();
 
-        public void RestartGame()
-        {
-            restartGame?.Invoke();
-        }
-
+        public void RestartGame() => restartGame?.Invoke();
     }
 }
