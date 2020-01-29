@@ -32,8 +32,6 @@ namespace Common
 
         [SerializeField] private Transform enemyParent;
 
-      
-
         // Start is called before the first frame update
         void Start()
         {
@@ -45,7 +43,7 @@ namespace Common
             levelService.GenerateLevel();
         }
 
-        public void SetGameStatus(bool gameWon) => gameStatus?.Invoke(gameWon);
+        public void SetGameResult(bool gameWon) => gameStatus?.Invoke(gameWon);
 
         public void UpdateScore() => updateScore?.Invoke();
 

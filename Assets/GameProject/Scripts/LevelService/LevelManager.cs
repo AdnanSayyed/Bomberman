@@ -10,7 +10,7 @@ namespace LevelSystem
     public class LevelManager
     {
         private LevelController levelController;
-        private GameManager serviceManager;
+        private GameManager gameManager;
         private PlayerManager playerService;
 
         public LevelManager(FixedBlock fixedBlockPrefab, WeakBlock breakableBlockPrefab,

@@ -60,7 +60,7 @@ namespace EnemySystem
             if (enemies.Count <= 0)
             {
                 //TODO: fire game won event
-                gameManager.SetGameStatus(true);
+                gameManager.SetGameResult(true);
                 return;
             }
         }
