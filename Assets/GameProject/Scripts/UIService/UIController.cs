@@ -13,23 +13,23 @@ namespace UISystem
         [SerializeField] private TextMeshProUGUI scoreText, goScoreText, goStatusText;
         [SerializeField] private Button restartBtn;
 
-        GameManager serviceManager;
+        GameManager gameManager;
         int score;
 
         private void RegisterEvents()
         {
-            this.serviceManager.updateScore += UpdateScore;
-            this.serviceManager.gameStatus += UpdateGameStatus;
+            this.gameManager.updateScore += UpdateScore;
+            this.gameManager.gameStatus += UpdateGameStatus;
         }
         private void UnRegisterEvents()
         {
-            this.serviceManager.updateScore -= UpdateScore;
-            this.serviceManager.gameStatus -= UpdateGameStatus;
+            this.gameManager.updateScore -= UpdateScore;
+            this.gameManager.gameStatus -= UpdateGameStatus;
         }
 
-        public void SetServiceManager(GameManager serviceManager)
+        public void SetServiceManager(GameManager gameManager)
         {
-            this.serviceManager = serviceManager;
+            this.gameManager = gameManager;
             RegisterEvents();
         }
 
@@ -64,7 +64,7 @@ namespace UISystem
         void RestartGame()
         {
             SetUI();
-            serviceManager.RestartGame();
+            gameManager.RestartGame();
         }
 
         void SetUI()

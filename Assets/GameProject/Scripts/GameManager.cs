@@ -30,6 +30,8 @@ namespace Common
         PlayerManager playerService;
         EnemyManager enemyService;
 
+        [SerializeField] private Transform enemyParent;
+
       
 
         // Start is called before the first frame update
@@ -37,7 +39,7 @@ namespace Common
         {
             uiController.SetServiceManager(this);
             playerService = new PlayerManager(playerPrefab, bombPrefab, this);
-            enemyService = new EnemyManager(enemyPrefab, this);
+            enemyService = new EnemyManager(enemyPrefab, this,enemyParent);
             levelService = new LevelManager(fixedBlock, breableBlock, enemyService, playerService);
             enemyService.SetLevelService(levelService);
             levelService.GenerateLevel();

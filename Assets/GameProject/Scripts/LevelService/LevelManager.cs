@@ -14,12 +14,12 @@ namespace LevelSystem
         private PlayerManager playerService;
 
         public LevelManager(FixedBlock fixedBlockPrefab, WeakBlock breakableBlockPrefab,
-                            EnemyManager enemyService, PlayerManager playerService)
+                            EnemyManager enemyManager, PlayerManager playerManager)
         {
-            this.playerService = playerService;
+            this.playerService = playerManager;
             this.playerService.SetLevelService(this);
             levelController = new LevelController(fixedBlockPrefab, breakableBlockPrefab,
-                                                  enemyService, playerService, this);
+                                                  enemyManager, playerManager, this);
         }
 
         public void EmptyGrid(Vector2 position)

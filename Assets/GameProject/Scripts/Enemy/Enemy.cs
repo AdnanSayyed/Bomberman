@@ -10,13 +10,13 @@ namespace EnemySystem
     {
         [SerializeField] private float moveSpeed = 5f;
 
-        LevelManager levelService;
+        LevelManager levelManager;
         Vector3 currentGrid, nextGrid;
         List<Vector3> gridPositions;
         float startTime, currentTime, totalDistance;
-        EnemyManager enemyService;
+        EnemyManager enemyManager;
         [SerializeField] private Transform enemySprite;
-        bool canMove, isCaged = true;
+        bool canMove, isStuck = true;
         WaitForSeconds waitTime = new WaitForSeconds(1f);
 
         // Start is called before the first frame update
@@ -27,26 +27,26 @@ namespace EnemySystem
             canMove = CanMove();
             if(canMove == true)
             {
-                isCaged = false;
+                isStuck = false;
                 GetNextGrid();
                 totalDistance = Vector3.Distance(currentGrid, nextGrid);
             }
             else
             {
-                StartCoroutine(CheckIfCaged());
+                StartCoroutine(CheckForStuck());
             }
         }
 
         public void SetServices(LevelManager levelService, EnemyManager enemyService)
         {
-            this.enemyService = enemyService;
-            this.levelService = levelService;
+            this.enemyManager = enemyService;
+            this.levelManager = levelService;
         }
 
         // Update is called once per frame
         void Update()
         {
-            if (isCaged == false)
+            if (isStuck == false)
                 Move();
         }
 
@@ -75,7 +75,7 @@ namespace EnemySystem
 
         private void CheckAvailableDirection(Vector3 direction)
         {
-            GameObject obj = levelService.GetObjAtGrid(transform.position + direction);
+            GameObject obj = levelManager.GetObjAtGrid(transform.position + direction);
             if (obj == null || obj.GetComponent<Enemy>() != null)
             {
                 gridPositions.Add(transform.position + direction);
@@ -105,23 +105,23 @@ namespace EnemySystem
             }
         }
 
-        IEnumerator CheckIfCaged()
+        IEnumerator CheckForStuck()
         {
             yield return waitTime;
 
             if(CanMove())
             {
-                isCaged = false;
+                isStuck = false;
                 yield return null;
             }
 
-            StartCoroutine(CheckIfCaged());
+            StartCoroutine(CheckForStuck());
         }
 
         public void Damage()
         {
-            levelService.EmptyGrid(currentGrid);
-            enemyService.RemoveEnemy(this);
+            levelManager.EmptyGrid(currentGrid);
+            enemyManager.RemoveEnemy(this);
             Destroy(gameObject);
         }
 

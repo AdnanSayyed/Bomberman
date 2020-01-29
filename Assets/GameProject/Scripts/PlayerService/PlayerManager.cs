@@ -12,12 +12,12 @@ namespace PlayerSystem
         private LevelManager levelService;
         private GameManager serviceManager;
 
-        public PlayerManager(Player playerPrefab, BombController bombPrefab, GameManager serviceManager)
+        public PlayerManager(Player playerPrefab, BombController bombPrefab, GameManager gameManager)
         {
-            this.serviceManager = serviceManager;
+            this.serviceManager = gameManager;
             this.playerPrefab = playerPrefab;
             this.bombPrefab = bombPrefab;
-            serviceManager.restartGame += RestartGame;
+            gameManager.restartGame += RestartGame;
         }
 
         ~PlayerManager()

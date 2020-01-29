@@ -7,56 +7,60 @@ namespace EnemySystem
 {
     public class EnemyManager 
     {
-        private List<Enemy> enemyControllers;
+        private List<Enemy> enemies;
 
-        private LevelManager levelService;
+        private LevelManager levelManager;
+
         private Enemy enemyPrefab;
 
-        private GameManager serviceManager;
+        private GameManager gameManager;
 
-        public EnemyManager(Enemy enemyPrefab, GameManager serviceManager)
+        private Transform enemyParent;
+
+        public EnemyManager(Enemy enemyPrefab, GameManager gameManager,Transform enemyParent)
         {
-            this.serviceManager = serviceManager;
-            enemyControllers = new List<Enemy>();
+            this.gameManager = gameManager;
+            enemies = new List<Enemy>();
             this.enemyPrefab = enemyPrefab;
-            this.serviceManager.restartGame += ResetEnemyList;
+            this.enemyParent = enemyParent;
+            this.gameManager.restartGame += ResetEnemyList;
         }
 
         ~EnemyManager()
         {
-            this.serviceManager.restartGame -= ResetEnemyList;
+            this.gameManager.restartGame -= ResetEnemyList;
         }
 
         void ResetEnemyList()
         {
-            for (int i = 0; i < enemyControllers.Count; i++)
+            for (int i = 0; i < enemies.Count; i++)
             {
-                Object.Destroy(enemyControllers[i].gameObject);
+                Object.Destroy(enemies[i].gameObject);
             }
 
-            enemyControllers.Clear();
+            enemies.Clear();
         }
 
         public void SetLevelService(LevelManager levelService)
         {
-            this.levelService = levelService;
+            this.levelManager = levelService;
         }
 
         public void SpawnEnemy(Vector3 pos)
         {
-            GameObject enemy = GameObject.Instantiate(enemyPrefab.gameObject, pos, Quaternion.identity);
-            enemy.GetComponent<Enemy>().SetServices(levelService, this);
-            enemyControllers.Add(enemy.GetComponent<Enemy>());
+            GameObject enemy = Object.Instantiate(enemyPrefab.gameObject, pos, Quaternion.identity,enemyParent);
+            enemy.GetComponent<Enemy>().SetServices(levelManager, this);
+            enemies.Add(enemy.GetComponent<Enemy>());
         }
 
-        public void RemoveEnemy(Enemy enemyController)
+        public void RemoveEnemy(Enemy enemy)
         {
-            enemyControllers.Remove(enemyController);
-            serviceManager.UpdateScore();
-            if (enemyControllers.Count <= 0)
+            enemies.Remove(enemy);
+            gameManager.UpdateScore();
+            if (enemies.Count <= 0)
             {
                 //TODO: fire game won event
-                serviceManager.SetGameStatus(true);
+                gameManager.SetGameStatus(true);
                 return;
             }
         }
