@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 311960146}
   - component: {fileID: 311960145}
   m_Layer: 5
-  m_Name: UIManagerCanvas
+  m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -399,7 +399,7 @@ GameObject:
   - component: {fileID: 1021703717}
   - component: {fileID: 1021703716}
   m_Layer: 0
-  m_Name: ServiceManager
+  m_Name: GameManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -418,7 +418,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyCount: 5
-  gridSize: {x: 15, y: 11}
+  gridSize: {x: 15, y: 10}
   uiController: {fileID: 311960149}
   enemyPrefab: {fileID: 315681387314900423, guid: 75cfabcce161346c9acfbd338eeac931,
     type: 3}
@@ -577,7 +577,7 @@ GameObject:
   - component: {fileID: 1068163881}
   - component: {fileID: 1068163880}
   m_Layer: 5
-  m_Name: GameOverScene
+  m_Name: GameOverPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -731,7 +731,7 @@ GameObject:
   - component: {fileID: 1676254331}
   - component: {fileID: 1676254330}
   m_Layer: 5
-  m_Name: GameStatus
+  m_Name: GameResultText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1081,7 +1081,7 @@ GameObject:
   - component: {fileID: 1735657704}
   - component: {fileID: 1735657703}
   m_Layer: 5
-  m_Name: Holder
+  m_Name: Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1122,7 +1122,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.3225035, g: 0.8301887, b: 0.23104309, a: 1}
+  m_Color: {r: 0.23137257, g: 0.58136606, b: 0.83137256, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -1158,7 +1158,7 @@ GameObject:
   - component: {fileID: 2022461215}
   - component: {fileID: 2022461214}
   m_Layer: 5
-  m_Name: GameScore
+  m_Name: GameScoreText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
