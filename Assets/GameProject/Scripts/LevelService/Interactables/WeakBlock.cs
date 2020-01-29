@@ -9,7 +9,7 @@ namespace LevelSystem
     {
         LevelManager levelManager;
 
-        public void SetLevelService(LevelManager levelManager)
+        public void SetLevelManager(LevelManager levelManager)
         {
             this.levelManager = levelManager;
         }

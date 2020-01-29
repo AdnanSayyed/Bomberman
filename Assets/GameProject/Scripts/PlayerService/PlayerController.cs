@@ -6,20 +6,20 @@ namespace PlayerSystem
     public class PlayerController
     {
         private Player playerView;
-        private PlayerManager playerService;
+        private PlayerManager playerManager;
         private GameObject bombPrefab;
-        private LevelManager levelService;
+        private LevelManager levelManager;
 
         public Player GetPlayerView { get { return playerView; } }
 
         private GameObject lastBomb = null;
 
         public PlayerController(Player playerPref, GameObject bombPrefab
-                                , Vector2 pos, PlayerManager playerService
-            , LevelManager levelService)
+                                , Vector2 pos, PlayerManager playerManager
+            , LevelManager levelManager)
         {
-            this.levelService = levelService;
-            this.playerService = playerService;
+            this.levelManager = levelManager;
+            this.playerManager = playerManager;
             this.bombPrefab = bombPrefab;
             GameObject player = Object.Instantiate(playerPref.gameObject, pos, Quaternion.identity);
             playerView = player.GetComponent<Player>();
@@ -34,14 +34,14 @@ namespace PlayerSystem
             if (lastBomb == null)
             {
                 lastBomb = Object.Instantiate(bombPrefab, spawnPOs, Quaternion.identity);
-                lastBomb.GetComponent<BombController>().SetLevelService(levelService);
+                lastBomb.GetComponent<BombController>().SetLevelManager(levelManager);
             }
         }
 
         public void PlayerKilled()
         {
             Object.Destroy(playerView.gameObject);
-            playerService.PlayerKilled();
+            playerManager.PlayerKilled();
         }
 
         public void PlayerDestroy()

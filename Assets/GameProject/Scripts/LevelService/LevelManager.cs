@@ -11,13 +11,13 @@ namespace LevelSystem
     {
         private LevelController levelController;
         private GameManager gameManager;
-        private PlayerManager playerService;
+        private PlayerManager playerManager;
 
         public LevelManager(FixedBlock fixedBlockPrefab, WeakBlock breakableBlockPrefab,
                             EnemyManager enemyManager, PlayerManager playerManager)
         {
-            this.playerService = playerManager;
-            this.playerService.SetLevelService(this);
+            this.playerManager = playerManager;
+            this.playerManager.SetLevelManager(this);
             levelController = new LevelController(fixedBlockPrefab, breakableBlockPrefab,
                                                   enemyManager, playerManager, this);
         }

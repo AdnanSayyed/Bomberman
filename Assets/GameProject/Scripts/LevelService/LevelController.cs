@@ -17,18 +17,18 @@ namespace LevelSystem
         private FixedBlock fixedBlockPref;
         private WeakBlock breakableBlockPref;
         private GameObject levelHolder;
-        private EnemyManager enemyService;
+        private EnemyManager enemyManager;
 
-        PlayerManager playerService;
-        LevelManager levelService;
+        PlayerManager playerManager;
+        LevelManager levelManager;
 
         public LevelController(FixedBlock fixedBlockPrefab, WeakBlock breakableBlockPrefab,
-                                EnemyManager enemyService, PlayerManager playerService
-                                , LevelManager levelService)
+                                EnemyManager enemyManager, PlayerManager playerManager
+                                , LevelManager levelManager)
         {
-            this.playerService = playerService;
-            this.enemyService = enemyService;
-            this.levelService = levelService;
+            this.playerManager = playerManager;
+            this.enemyManager = enemyManager;
+            this.levelManager = levelManager;
             this.fixedBlockPref = fixedBlockPrefab;
             this.breakableBlockPref = breakableBlockPrefab;
             gridWidth = (int)GameManager.Instance.gridSize.x;
@@ -137,7 +137,7 @@ namespace LevelSystem
         void SpawnPlayer()
         {
             Vector2 spawnPos = new Vector2(1, gridHeight);
-            playerService.SpawnPlayer(spawnPos);
+            playerManager.SpawnPlayer(spawnPos);
             emptyGridList.Remove(spawnPos);
 
             for (int i = 1; i < 4; i++)
@@ -160,7 +160,7 @@ namespace LevelSystem
                 GameObject breakableBlock = Object.Instantiate(breakableBlockPref.gameObject, vector, Quaternion.identity);
                 breakableBlock.transform.SetParent(levelHolder.transform);
                 breakableBlock.name = "Breakable[" + vector.x + "," + vector.y + "]";
-                breakableBlock.GetComponent<WeakBlock>().SetLevelService(levelService);
+                breakableBlock.GetComponent<WeakBlock>().SetLevelManager(levelManager);
                 emptyGridList.RemoveAt(k);
                 gridArray[(int)vector.x, (int)vector.y] = breakableBlock;
             }
@@ -172,7 +172,7 @@ namespace LevelSystem
             {
                 int k = Random.Range(0, emptyGridList.Count);
                 Vector2 vector = emptyGridList[k];
-                enemyService.SpawnEnemy(vector);
+                enemyManager.SpawnEnemy(vector);
                 emptyGridList.RemoveAt(k);
             }
         }

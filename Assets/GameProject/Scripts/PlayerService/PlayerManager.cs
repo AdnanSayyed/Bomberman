@@ -9,12 +9,12 @@ namespace PlayerSystem
         private PlayerController playerController;
         private Player playerPrefab;
         private BombController bombPrefab;
-        private LevelManager levelService;
-        private GameManager serviceManager;
+        private LevelManager levelManager;
+        private GameManager gameManager;
 
         public PlayerManager(Player playerPrefab, BombController bombPrefab, GameManager gameManager)
         {
-            this.serviceManager = gameManager;
+            this.gameManager = gameManager;
             this.playerPrefab = playerPrefab;
             this.bombPrefab = bombPrefab;
             gameManager.restartGame += RestartGame;
@@ -22,19 +22,19 @@ namespace PlayerSystem
 
         ~PlayerManager()
         {
-            serviceManager.restartGame -= RestartGame;
+            gameManager.restartGame -= RestartGame;
         }
 
         public void SpawnPlayer(Vector2 spawnPos)
         {
             playerController = new PlayerController(playerPrefab, bombPrefab.gameObject, spawnPos, this,
-            levelService);
+            levelManager);
         }
 
         public void PlayerKilled()
         {
             //TODO: fire game lost event
-            serviceManager.SetGameResult(false);
+            gameManager.SetGameResult(false);
             playerController = null; 
         }
 
@@ -52,9 +52,9 @@ namespace PlayerSystem
             return playerController.GetPlayerView.gameObject;
         }
 
-        public void SetLevelService(LevelManager levelService)
+        public void SetLevelManager(LevelManager levelManager)
         {
-            this.levelService = levelService;
+            this.levelManager = levelManager;
         }
     }
 }

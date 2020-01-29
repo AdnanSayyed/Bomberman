@@ -4,7 +4,7 @@ using Common;
 
 public class BombController : MonoBehaviour
 {
-    LevelManager levelService;
+    LevelManager levelManager;
 
     [SerializeField] private int explosionArea = 0;
     [SerializeField] private GameObject explosionObj;
@@ -26,10 +26,10 @@ public class BombController : MonoBehaviour
         Destroy(gameObject);
     }
 
-    public void SetLevelService(LevelManager levelService)
+    public void SetLevelManager(LevelManager levelManager)
     {
-        this.levelService = levelService;
-        this.levelService.FillGrid(transform.position, this.gameObject);
+        this.levelManager = levelManager;
+        this.levelManager.FillGrid(transform.position, this.gameObject);
     }
 
     void Explode()
@@ -40,7 +40,7 @@ public class BombController : MonoBehaviour
         ExplodeCell(transform.position, 0, Vector3.right);
         ExplodeCell(transform.position, 0, Vector3.down);
 
-        levelService.EmptyGrid(transform.position);
+        levelManager.EmptyGrid(transform.position);
         Destroy(gameObject);
     }
 
@@ -48,7 +48,7 @@ public class BombController : MonoBehaviour
     {
         int area = areaCovered;
         Vector2 targetPos = position + explosionDirection;
-        GameObject obj = levelService.GetObjAtGrid(targetPos);
+        GameObject obj = levelManager.GetObjAtGrid(targetPos);
 
         area++;
         if (obj != null)
@@ -57,7 +57,7 @@ public class BombController : MonoBehaviour
             else
             {
                 Instantiate(explosionObj, targetPos, Quaternion.identity);
-                levelService.EmptyGrid(position);
+                levelManager.EmptyGrid(position);
 
                 if (area < explosionArea)
                 {

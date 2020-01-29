@@ -9,13 +9,13 @@ namespace EnemySystem
     public class Enemy : MonoBehaviour , IDamage
     {
         [SerializeField] private float moveSpeed = 5f;
+        [SerializeField] private Transform enemySprite;
 
         LevelManager levelManager;
         Vector3 currentGrid, nextGrid;
         List<Vector3> gridPositions;
         float startTime, currentTime, totalDistance;
         EnemyManager enemyManager;
-        [SerializeField] private Transform enemySprite;
         bool canMove, isStuck = true;
         WaitForSeconds waitTime = new WaitForSeconds(1f);
 
@@ -37,10 +37,10 @@ namespace EnemySystem
             }
         }
 
-        public void SetServices(LevelManager levelService, EnemyManager enemyService)
+        public void SetData(LevelManager levelManager, EnemyManager enemyManager)
         {
-            this.enemyManager = enemyService;
-            this.levelManager = levelService;
+            this.enemyManager = enemyManager;
+            this.levelManager = levelManager;
         }
 
         // Update is called once per frame

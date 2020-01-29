@@ -27,7 +27,7 @@ namespace UISystem
             this.gameManager.gameStatus -= UpdateGameStatus;
         }
 
-        public void SetServiceManager(GameManager gameManager)
+        public void SetGameManager(GameManager gameManager)
         {
             this.gameManager = gameManager;
             RegisterEvents();

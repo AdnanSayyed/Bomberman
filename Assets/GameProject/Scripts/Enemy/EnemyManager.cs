@@ -41,15 +41,15 @@ namespace EnemySystem
             enemies.Clear();
         }
 
-        public void SetLevelService(LevelManager levelService)
+        public void SetLevelManager(LevelManager levelManager)
         {
-            this.levelManager = levelService;
+            this.levelManager = levelManager;
         }
 
         public void SpawnEnemy(Vector3 pos)
         {
             GameObject enemy = Object.Instantiate(enemyPrefab.gameObject, pos, Quaternion.identity,enemyParent);
-            enemy.GetComponent<Enemy>().SetServices(levelManager, this);
+            enemy.GetComponent<Enemy>().SetData(levelManager, this);
             enemies.Add(enemy.GetComponent<Enemy>());
         }
 
