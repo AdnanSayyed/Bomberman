@@ -8,11 +8,12 @@ public class BombController : MonoBehaviour
 
     [SerializeField] private int explosionArea = 0;
     [SerializeField] private GameObject explosionObj;
+    [SerializeField] private int explosionTime = 3;
 
     // Start is called before the first frame update
     void Start()
     {
-        Invoke("Explode", 3);
+        Invoke("Explode", explosionTime);
         GameManager.Instance.restartGame += RestartGame;
     }
 
