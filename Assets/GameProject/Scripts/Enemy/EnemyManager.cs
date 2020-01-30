@@ -59,12 +59,9 @@ namespace EnemySystem
             gameManager.UpdateScore();
             if (enemies.Count <= 0)
             {
-                //TODO: fire game won event
                 gameManager.SetGameResult(true);
                 return;
             }
         }
-
-
     }
 }
