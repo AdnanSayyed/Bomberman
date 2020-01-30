@@ -29,28 +29,27 @@ namespace PlayerSystem
 
             if (Mathf.Abs(horizontalVal) > Mathf.Abs(verticalVal))
             {
-                if (horizontalVal > 0 && playerMainTransform.rotation.z != 90)
+                if (horizontalVal > 0 )//&& playerMainTransform.rotation.z != 90)
                 {
                     //playerMainTransform.rotation = Quaternion.Euler(new Vector3(0, 0, 90));
                     playerAnimator.Play("PlayerSideWalk_Right");
                 }
-                else if (horizontalVal < 0 && playerMainTransform.rotation.z != 270)
+                else if (horizontalVal < 0) //&& playerMainTransform.rotation.z != 270)
                 {
                     //playerMainTransform.rotation = Quaternion.Euler(new Vector3(0, 0, 270));
                     playerAnimator.Play("PlayerSideWalk_Left");
                 }
-               
                 verticalVal = 0;
             }
 
             if (Mathf.Abs(verticalVal) > Mathf.Abs(horizontalVal))
             {
-                if (verticalVal > 0 && playerMainTransform.rotation.z != 180)
+                if (verticalVal > 0 )//&& playerMainTransform.rotation.z != 180)
                 {
                     //playerMainTransform.rotation = Quaternion.Euler(new Vector3(0, 0, 180));
                     playerAnimator.Play("PlayerWalk_Back");
                 }
-                else if (verticalVal < 0 )
+                else if (verticalVal < 0 )//&& playerMainTransform.rotation.z!=0)
                 {
                     //playerMainTransform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
                     playerAnimator.Play("PlayerWalk_Front");
