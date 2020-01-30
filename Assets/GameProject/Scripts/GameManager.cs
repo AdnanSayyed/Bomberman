@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 
 namespace Common
 {
-    public class GameManager :MonoBehaviour
+    public class GameManager :StateMachine
     {
         public static GameManager Instance;
 
@@ -33,6 +33,7 @@ namespace Common
 
         [SerializeField] private Transform enemyParent;
 
+
         void Start()
         {
             if (Instance != null)
@@ -43,6 +44,24 @@ namespace Common
             DontDestroyOnLoad(gameObject);
 
             uiController.SetGameManager(this);
+
+            AddState(new MenuState());
+        }
+
+        public override void OnInputTrigger(EventState state, EventType type)
+        {
+            if(currentState!=null)
+            {
+                currentState.OnInputTrigger(state, type);
+            }
+        }
+
+        public override void EndCurrentState()
+        {
+            if (currentState != null)
+            {
+                currentState.OnStateEnd();
+            }
         }
 
         public void StartGame()
