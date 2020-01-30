@@ -41,7 +41,6 @@ namespace PlayerSystem
                 }
                 verticalVal = 0;
             }
-
             if (Mathf.Abs(verticalVal) > Mathf.Abs(horizontalVal))
             {
                 if (verticalVal > 0 )//&& playerMainTransform.rotation.z != 180)
