@@ -33,7 +33,6 @@ namespace PlayerSystem
 
         public void PlayerKilled()
         {
-            //TODO: fire game lost event
             gameManager.SetGameResult(false);
             playerController = null; 
         }

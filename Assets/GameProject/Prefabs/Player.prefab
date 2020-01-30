@@ -49,6 +49,7 @@ MonoBehaviour:
   moveSpeed: 5
   myBody: {fileID: 7655569672729833636}
   playerMainTransform: {fileID: 6854928996737190998}
+  playerAnimator: {fileID: 4635304649466688976}
 --- !u!50 &7655569672729833636
 Rigidbody2D:
   serializedVersion: 4
@@ -96,6 +97,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6854928996737190998}
   - component: {fileID: 1540149658494505599}
+  - component: {fileID: 4635304649466688976}
   m_Layer: 0
   m_Name: Square
   m_TagString: Untagged
@@ -154,7 +156,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 969eb81e2f67844c3bfa76b21311f092, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 1a3be432d00b6a248a68ed299afff385, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -165,3 +167,22 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &4635304649466688976
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5448136363525024001}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: fb75d55be758c4245947ac91c64ae60e, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

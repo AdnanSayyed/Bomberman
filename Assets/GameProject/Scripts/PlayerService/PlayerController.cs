@@ -28,12 +28,12 @@ namespace PlayerSystem
 
         public void SpawnBomb()
         {
-            Vector2 spawnPOs = playerView.transform.position;
-            spawnPOs.x = Mathf.Round(spawnPOs.x);
-            spawnPOs.y = Mathf.Round(spawnPOs.y);
+            Vector2 spawnPos = playerView.transform.position;
+            spawnPos.x = Mathf.Round(spawnPos.x);
+            spawnPos.y = Mathf.Round(spawnPos.y);
             if (lastBomb == null)
             {
-                lastBomb = Object.Instantiate(bombPrefab, spawnPOs, Quaternion.identity);
+                lastBomb = Object.Instantiate(bombPrefab, spawnPos, Quaternion.identity);
                 lastBomb.GetComponent<BombController>().SetLevelManager(levelManager);
             }
         }

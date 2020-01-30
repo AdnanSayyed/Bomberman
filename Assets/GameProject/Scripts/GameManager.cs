@@ -33,7 +33,6 @@ namespace Common
 
         [SerializeField] private Transform enemyParent;
 
-        // Start is called before the first frame update
         void Start()
         {
             if (Instance != null)
