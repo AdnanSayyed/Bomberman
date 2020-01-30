@@ -15,6 +15,7 @@ namespace Common
         public event Action<bool> gameStatus;
         public event Action updateScore;
         public event Action restartGame;
+       
 
         [Range(1, 10)]
         public int enemyCount;
@@ -40,10 +41,15 @@ namespace Common
             else
                 Instance = this;
 
+            DontDestroyOnLoad(gameObject);
 
             uiController.SetGameManager(this);
+        }
+
+        public void StartGame()
+        {
             playerManager = new PlayerManager(playerPrefab, bombPrefab, this);
-            enemyManager = new EnemyManager(enemyPrefab, this,enemyParent);
+            enemyManager = new EnemyManager(enemyPrefab, this, enemyParent);
             levelManager = new LevelManager(fixedBlock, breableBlock, enemyManager, playerManager);
             enemyManager.SetLevelManager(levelManager);
             levelManager.GenerateLevel();

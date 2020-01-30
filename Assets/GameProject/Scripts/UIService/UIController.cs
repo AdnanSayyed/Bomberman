@@ -8,10 +8,11 @@ namespace UISystem
     public class UIController : MonoBehaviour
     {
         [SerializeField]
-        private GameObject gamePanel, gameOverPanel;
+        private GameObject  gameOverPanel;
 
-        [SerializeField] private TextMeshProUGUI scoreText, goScoreText, goStatusText;
+        [SerializeField] private TextMeshProUGUI scoreText, resultPanelScoreText, resultMessageText;
         [SerializeField] private Button restartBtn;
+        [SerializeField] private Button startBtn;
 
         GameManager gameManager;
         int score;
@@ -20,11 +21,17 @@ namespace UISystem
         {
             this.gameManager.updateScore += UpdateScore;
             this.gameManager.gameStatus += UpdateGameStatus;
+
+            restartBtn.onClick.AddListener(RestartGame);
+            startBtn.onClick.AddListener(StartGame);
         }
         private void UnRegisterEvents()
         {
             this.gameManager.updateScore -= UpdateScore;
             this.gameManager.gameStatus -= UpdateGameStatus;
+
+            restartBtn.onClick.RemoveListener(RestartGame);
+            startBtn.onClick.RemoveListener(StartGame);
         }
 
         public void SetGameManager(GameManager gameManager)
@@ -42,9 +49,8 @@ namespace UISystem
         // Start is called before the first frame update
         void Start()
         {
-            SetUI();
+            ResetUI();
             DontDestroyOnLoad(gameObject);
-            restartBtn.onClick.AddListener(RestartGame);
         }
 
         void UpdateScore()
@@ -55,23 +61,34 @@ namespace UISystem
 
         void UpdateGameStatus(bool gameWon)
         {
-            gamePanel.SetActive(false);
-            goScoreText.text = "SCORE: " + score;
-            goStatusText.text = gameWon == true ? "Won the game!!" : "Lost the game!!";
+            //gamePanel.SetActive(false);
+            scoreText.gameObject.SetActive(false);
+            resultPanelScoreText.text = "SCORE: " + score;
+            resultMessageText.text = gameWon == true ? "You Won!!" : "You Lost!!";
             gameOverPanel.SetActive(true);
         }
 
         void RestartGame()
         {
-            SetUI();
+            ResetUI();
+            scoreText.gameObject.SetActive(true);
             gameManager.RestartGame();
         }
 
-        void SetUI()
+        void StartGame()
+        {
+            ResetUI();
+            scoreText.gameObject.SetActive(true);
+            gameManager.StartGame();
+            startBtn.gameObject.SetActive(false);
+        }
+
+
+
+        void ResetUI()
         {
             score = 000;
             scoreText.text = "SCORE: " + score;
-            gamePanel.SetActive(true);
             gameOverPanel.SetActive(false);
         }
 
