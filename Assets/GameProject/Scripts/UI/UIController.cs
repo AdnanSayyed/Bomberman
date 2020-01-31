@@ -74,7 +74,7 @@ namespace UISystem
         {
             ResetUI();
             scoreText.gameObject.SetActive(true);
-            gameManager.RestartGame();
+            GameManager.Instance.OnInputTrigger(EventState.restartButton, EventType.mouseDown);
         }
 
         void StartGame()

@@ -1,6 +1,11 @@
-﻿public class State
+﻿using System.Collections;
+
+public class State
 {
     protected delegate void SubState();
+
+    public delegate void CallBack();
+    private event CallBack OnCallBack;
 
     public virtual void OnInitialize(){ }
 
@@ -13,4 +18,5 @@
     public virtual void  OnNextState() { }
 
     public virtual void OnInputTrigger(EventState state,EventType type) { }
+
 }

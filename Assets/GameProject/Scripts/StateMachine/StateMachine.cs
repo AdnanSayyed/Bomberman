@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Common;
 
 public class StateMachine : MonoBehaviour
 {
@@ -27,11 +28,16 @@ public class StateMachine : MonoBehaviour
 
     }
 
+    
     public virtual void QuitGame()
     {
         if (currentState != null)
         {
             currentState = null;
+        }
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance = null;
         }
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;

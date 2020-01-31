@@ -17,6 +17,7 @@ namespace Common
         public event Action updateScore;
         public event Action restartGame;
 
+        public bool playerDied;
 
         [Range(1, 10)]
         public int enemyCount;
@@ -28,9 +29,9 @@ namespace Common
         public FixedBlock fixedBlock;
         public WeakBlock breableBlock;
 
-        LevelManager levelManager;
-        PlayerManager playerManager;
-        EnemyManager enemyManager;
+       [HideInInspector] public LevelManager levelManager;
+       [HideInInspector] public PlayerManager playerManager;
+       [HideInInspector] public EnemyManager enemyManager;
 
         [SerializeField] private Transform enemyParent;
 
@@ -66,15 +67,19 @@ namespace Common
             }
         }
 
-        public void StartGame()
+
+        /// <summary>
+        /// generates player,enemies and tiles
+        /// </summary>
+        public void GenerateManagers()
         {
             playerManager = new PlayerManager(playerPrefab, bombPrefab, this);
             enemyManager = new EnemyManager(enemyPrefab, this, enemyParent);
             levelManager = new LevelManager(fixedBlock, breableBlock, enemyManager, playerManager);
             enemyManager.SetLevelManager(levelManager);
-            levelManager.GenerateLevel();
         }
 
+        
         public void SetGameResult(bool gameWon) => gameStatus?.Invoke(gameWon);
 
         public void UpdateScore() => updateScore?.Invoke();

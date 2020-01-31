@@ -5,12 +5,12 @@ namespace PlayerSystem
 {
     public class PlayerController
     {
-        private Player playerView;
+        private Player player;
         private PlayerManager playerManager;
         private GameObject bombPrefab;
         private LevelManager levelManager;
 
-        public Player GetPlayerView { get { return playerView; } }
+        public Player GetPlayer { get { return player; } }
 
         private GameObject lastBomb = null;
 
@@ -22,13 +22,13 @@ namespace PlayerSystem
             this.playerManager = playerManager;
             this.bombPrefab = bombPrefab;
             GameObject player = Object.Instantiate(playerPref.gameObject, pos, Quaternion.identity);
-            playerView = player.GetComponent<Player>();
-            playerView.SetController(this);
+            this.player = player.GetComponent<Player>();
+            this.player.SetController(this);
         }
 
         public void SpawnBomb()
         {
-            Vector2 spawnPos = playerView.transform.position;
+            Vector2 spawnPos = player.transform.position;
             spawnPos.x = Mathf.Round(spawnPos.x);
             spawnPos.y = Mathf.Round(spawnPos.y);
             if (lastBomb == null)
@@ -40,13 +40,13 @@ namespace PlayerSystem
 
         public void PlayerKilled()
         {
-            Object.Destroy(playerView.gameObject);
+            Object.Destroy(player.gameObject);
             playerManager.PlayerKilled();
         }
 
         public void PlayerDestroy()
         {
-            Object.Destroy(playerView.gameObject);
+            Object.Destroy(player.gameObject);
         }
     }
 }

@@ -48,7 +48,7 @@ namespace PlayerSystem
 
         public GameObject GetPlayer()
         {
-            return playerController.GetPlayerView.gameObject;
+            return playerController.GetPlayer.gameObject;
         }
 
         public void SetLevelManager(LevelManager levelManager)

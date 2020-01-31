@@ -64,11 +64,16 @@ namespace PlayerSystem
         public void SetController(PlayerController playerController) =>
             this.playerController = playerController;
 
+        public void DoDamage()
+        {
+            playerController.PlayerKilled();
+        }
 
         void OnCollisionEnter2D(Collision2D other)
         {
             if (other.gameObject.GetComponent<Enemy>() != null)
             {
+                GameManager.Instance.playerDied = true;
                 Damage();
             }
         }

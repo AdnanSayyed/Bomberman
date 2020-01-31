@@ -22,6 +22,7 @@ public class ExplosionController : MonoBehaviour
     {
         if (collision.GetComponent<IDamage>() != null)
         {
+            GameManager.Instance.playerDied = true;
             collision.GetComponent<IDamage>().Damage();
         }
     }
