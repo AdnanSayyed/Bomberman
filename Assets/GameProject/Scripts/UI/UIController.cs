@@ -13,6 +13,7 @@ namespace UISystem
         [SerializeField] private TextMeshProUGUI scoreText, resultPanelScoreText, resultMessageText;
         [SerializeField] private Button restartBtn;
         [SerializeField] private Button startBtn;
+        [SerializeField] private Button quitButton;
 
         GameManager gameManager;
         int score;
@@ -24,6 +25,7 @@ namespace UISystem
 
             restartBtn.onClick.AddListener(RestartGame);
             startBtn.onClick.AddListener(StartGame);
+            quitButton.onClick.AddListener(QuitGame);
         }
         private void UnRegisterEvents()
         {
@@ -32,6 +34,7 @@ namespace UISystem
 
             restartBtn.onClick.RemoveListener(RestartGame);
             startBtn.onClick.RemoveListener(StartGame);
+            startBtn.onClick.RemoveListener(QuitGame);
         }
 
         public void SetGameManager(GameManager gameManager)
@@ -61,7 +64,6 @@ namespace UISystem
 
         void UpdateGameStatus(bool gameWon)
         {
-            //gamePanel.SetActive(false);
             scoreText.gameObject.SetActive(false);
             resultPanelScoreText.text = "SCORE: " + score;
             resultMessageText.text = gameWon == true ? "You Won!!" : "You Lost!!";
@@ -79,11 +81,15 @@ namespace UISystem
         {
             ResetUI();
             scoreText.gameObject.SetActive(true);
-            gameManager.StartGame();
             startBtn.gameObject.SetActive(false);
+            quitButton.gameObject.SetActive(false);
+            GameManager.Instance.OnInputTrigger(EventState.startButton, EventType.mouseDown);
         }
 
-
+        void QuitGame()
+        {
+            GameManager.Instance.OnInputTrigger(EventState.quitButton, EventType.mouseDown);
+        }
 
         void ResetUI()
         {

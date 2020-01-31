@@ -26,6 +26,19 @@ public class StateMachine : MonoBehaviour
     {
 
     }
+
+    public virtual void QuitGame()
+    {
+        if (currentState != null)
+        {
+            currentState = null;
+        }
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+         Application.Quit();
+#endif
+    }
 }
 
 
@@ -33,7 +46,8 @@ public enum EventState
 {
    startButton,
    restartButton,
-   quitButton
+   quitButton,
+   movementButton
 }
 
 public enum EventType

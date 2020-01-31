@@ -8,14 +8,15 @@ using UnityEngine.SceneManagement;
 
 namespace Common
 {
-    public class GameManager :StateMachine
+    public class GameManager : StateMachine
     {
+
         public static GameManager Instance;
 
         public event Action<bool> gameStatus;
         public event Action updateScore;
         public event Action restartGame;
-       
+
 
         [Range(1, 10)]
         public int enemyCount;
@@ -50,11 +51,12 @@ namespace Common
 
         public override void OnInputTrigger(EventState state, EventType type)
         {
-            if(currentState!=null)
+            if (currentState != null)
             {
                 currentState.OnInputTrigger(state, type);
             }
         }
+
 
         public override void EndCurrentState()
         {
