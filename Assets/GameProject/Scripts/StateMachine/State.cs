@@ -4,9 +4,6 @@ public class State
 {
     protected delegate void SubState();
 
-    public delegate void CallBack();
-    private event CallBack OnCallBack;
-
     public virtual void OnInitialize(){ }
 
     public virtual void OnStateStart() { }
