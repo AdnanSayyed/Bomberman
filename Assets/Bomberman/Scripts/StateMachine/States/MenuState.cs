@@ -21,6 +21,11 @@ public class MenuState : State
         OnSubState?.Invoke();
     }
 
+    /// <summary>
+    /// sets substate on button clicks
+    /// </summary>
+    /// <param name="state">button name</param>
+    /// <param name="type">button state</param>
     public override void OnInputTrigger(EventState state, EventType type)
     {
         switch (state)
@@ -45,10 +50,17 @@ public class MenuState : State
 
     }
 
+    /// <summary>
+    /// Substae which ends current state and sets next state
+    /// </summary>
     private void EndMenuState()
     {
         GameManager.Instance.AddState(new GameState());
     }
+
+    /// <summary>
+    /// Substate for quit game
+    /// </summary>
     private void Quit()
     {
         GameManager.Instance.QuitGame();

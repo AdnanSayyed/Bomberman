@@ -8,15 +8,17 @@ namespace PlayerSystem
     /// </summary>
     public class PlayerController
     {
+        #region private fields
+
         private Player player;
         private PlayerManager playerManager;
         private GameObject bombPrefab;
         private LevelManager levelManager;
-
-        public Player GetPlayer { get { return player; } }
-
         private GameObject lastBomb = null;
 
+        #endregion
+
+        #region constructors
         public PlayerController(Player playerPref, GameObject bombPrefab
                                 , Vector2 pos, PlayerManager playerManager
             , LevelManager levelManager)
@@ -28,6 +30,9 @@ namespace PlayerSystem
             this.player = player.GetComponent<Player>();
             this.player.SetController(this);
         }
+
+        #endregion
+
 
         /// <summary>
         /// spawns a bomb

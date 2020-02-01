@@ -10,17 +10,36 @@ namespace UISystem
     /// </summary>
     public class UIController : MonoBehaviour
     {
-        [SerializeField]
-        private GameObject  gameOverPanel;
+        #region Visible in Inspector fields
+        
+        [Header("Panels")]
+        [SerializeField] private GameObject  gameOverPanel;
 
-        [SerializeField] private TextMeshProUGUI scoreText, resultPanelScoreText, resultMessageText,titleText;
+        [Header("Texts")]
+        [SerializeField] private TextMeshProUGUI scoreText;
+        [SerializeField] private TextMeshProUGUI  resultPanelScoreText;
+        [SerializeField] private TextMeshProUGUI resultMessageText,titleText;
+
+        [Header("Buttons")]
+        [Tooltip("Restart button")]
         [SerializeField] private Button restartBtn;
+
+        [Tooltip("Start button")]
         [SerializeField] private Button startBtn;
+
+        [Tooltip("Main Quit button")]
         [SerializeField] private Button quitButton;
+
+        [Tooltip("Result screen Quit button")]
         [SerializeField] private Button resultscreenQuitButton;
+
+        #endregion
+
         
         GameManager gameManager;
         int score;
+
+        #region Events
 
         private void RegisterEvents()
         {
@@ -43,12 +62,14 @@ namespace UISystem
             resultscreenQuitButton.onClick.RemoveListener(QuitGame);
         }
 
+        #endregion
+
+
         public void SetGameManager(GameManager gameManager)
         {
             this.gameManager = gameManager;
             RegisterEvents();
         }
-
 
         private void OnDisable()
         {
@@ -68,6 +89,10 @@ namespace UISystem
             scoreText.text = "SCORE: " + score;
         }
 
+        /// <summary>
+        /// update UI on game over
+        /// </summary>
+        /// <param name="gameWon">won or loss boolean</param>
         void UpdateGameStatus(bool gameWon)
         {
             scoreText.gameObject.SetActive(false);
@@ -75,6 +100,14 @@ namespace UISystem
             resultMessageText.text = gameWon == true ? "You Won!!" : "You Lost!!";
             gameOverPanel.SetActive(true);
         }
+        void ResetUI()
+        {
+            score = 000;
+            scoreText.text = "SCORE: " + score;
+            gameOverPanel.SetActive(false);
+        }
+
+        #region Buttons
 
         void RestartGame()
         {
@@ -98,12 +131,9 @@ namespace UISystem
             GameManager.Instance.OnInputTrigger(EventState.quitButton, EventType.mouseDown);
         }
 
-        void ResetUI()
-        {
-            score = 000;
-            scoreText.text = "SCORE: " + score;
-            gameOverPanel.SetActive(false);
-        }
+
+        #endregion
+
 
     }
 }

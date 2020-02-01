@@ -12,18 +12,26 @@ namespace LevelSystem
   /// </summary>
     public class LevelManager
     {
+        #region private fields
+
         private LevelController levelController;
         private GameManager gameManager;
         private PlayerManager playerManager;
 
-        public LevelManager(FixedBlock fixedBlockPrefab, WeakBlock breakableBlockPrefab,
+        #endregion
+
+        #region constructors
+
+        public LevelManager(FixedBlock fixedBlockPrefab, WeakBlock weakBlockPrefab,
                             EnemyManager enemyManager, PlayerManager playerManager)
         {
             this.playerManager = playerManager;
             this.playerManager.SetLevelManager(this);
-            levelController = new LevelController(fixedBlockPrefab, breakableBlockPrefab,
+            levelController = new LevelController(fixedBlockPrefab, weakBlockPrefab,
                                                   enemyManager, playerManager, this);
         }
+
+        #endregion
 
         public void EmptyGrid(Vector2 position)
         {
@@ -50,7 +58,6 @@ namespace LevelSystem
 
             if(levelController.gridArray[(int)position.x, (int)position.y])
                 obj = levelController.gridArray[(int)position.x, (int)position.y];
-
 
             return obj;
         }

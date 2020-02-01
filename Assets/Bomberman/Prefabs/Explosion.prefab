@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4950556141332264069}
   - component: {fileID: 2621998189621133715}
   m_Layer: 0
-  m_Name: explosion1
+  m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -146,6 +146,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colliderRef: {fileID: 8859189621153876138}
+  ExplosionObjDestroyTimer: 0.4
 --- !u!50 &712921219246279897
 Rigidbody2D:
   serializedVersion: 4

@@ -9,15 +9,26 @@ namespace PlayerSystem
     /// </summary>
     public class Player :MonoBehaviour, IDamage
     {
+        #region Visible in Inspector fields
+
+        [Tooltip("Player movement speed")]
         [SerializeField] private float moveSpeed;
-        [SerializeField] private Rigidbody2D myBody;
-        [SerializeField] private Transform playerMainTransform;
+
+        [Tooltip("Player rigidbody ref")]
+        [SerializeField] private Rigidbody2D playerRigidbody;
+
+        [Tooltip("Player animator ref")]
         [SerializeField] private Animator playerAnimator;
+
+        #endregion
+
+        #region private fields
 
         private PlayerController playerController;
         private float horizontalSpeed, verticalSpeed;
+        private bool isDead;
 
-        private bool dead;
+        #endregion
 
         /// <summary>
         /// getting and setting player status value where necessary
@@ -26,12 +37,18 @@ namespace PlayerSystem
         {
             get
             {
-                return dead;
+                return isDead;
             }
             set
             {
-                dead = value;
+                isDead = value;
             }
+        }
+
+        private void Start()
+        {
+            playerAnimator.Play("Idle");
+            horizontalSpeed = verticalSpeed = 0;
         }
 
         private void Update()
@@ -41,6 +58,9 @@ namespace PlayerSystem
         }
 
        
+        /// <summary>
+        /// player movement 
+        /// </summary>
         private void MoveDirection()
         {
             horizontalSpeed = Input.GetAxis("Horizontal");
@@ -53,6 +73,7 @@ namespace PlayerSystem
                     playerAnimator.Play("PlayerSideWalk_Right");
                     if (!isAnimatorPlaying())
                     {
+                        //restarting animation
                         playerAnimator.Play("PlayerSideWalk_Right", -1, 0f);
                     }
                 }
@@ -61,6 +82,7 @@ namespace PlayerSystem
                     playerAnimator.Play("PlayerSideWalk_Left");
                     if (!isAnimatorPlaying())
                     {
+                        //restarting animation
                         playerAnimator.Play("PlayerSideWalk_Left", -1, 0f);
                     }
                 }
@@ -74,6 +96,7 @@ namespace PlayerSystem
                     playerAnimator.Play("PlayerWalk_Back");
                     if (!isAnimatorPlaying())
                     {
+                        //restarting animation
                         playerAnimator.Play("PlayerWalk_Back", -1, 0f);
                     }
                 }
@@ -82,6 +105,7 @@ namespace PlayerSystem
                     playerAnimator.Play("PlayerWalk_Front");
                     if (!isAnimatorPlaying())
                     {
+                        //restarting animation
                         playerAnimator.Play("PlayerWalk_Front", -1, 0f);
                     }
                 }
@@ -89,40 +113,45 @@ namespace PlayerSystem
             }
         }
 
-        //check if animator is playing animation
+        /// <summary>
+        /// check if animator is playing animation
+        /// </summary>
+        /// <returns></returns>
         bool isAnimatorPlaying()
         {
             return playerAnimator.GetCurrentAnimatorStateInfo(0).length > playerAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime;
         }
 
     
+        /// <summary>
+        /// spawns a bomb
+        /// </summary>
         void SpawnBomb() => playerController.SpawnBomb();
 
         void FixedUpdate()
         {
-            myBody.velocity = new Vector2(horizontalSpeed, verticalSpeed) * moveSpeed;
+            playerRigidbody.velocity = new Vector2(horizontalSpeed, verticalSpeed) * moveSpeed;
         }
 
+        /// <summary>
+        /// damage to player
+        /// </summary>
         public void Damage() => playerController.PlayerKilled();
 
 
         public void SetController(PlayerController playerController) =>
             this.playerController = playerController;
 
-        public void DoDamage()
-        {
-            playerController.PlayerKilled();
-        }
-
+     
         /// <summary>
-        /// checking collision for enemy only
+        /// checking collision with enemy only
         /// </summary>
         /// <param name="other"></param>
         void OnCollisionEnter2D(Collision2D other)
         {
             if (other.gameObject.GetComponent<Enemy>() != null)
             {
-                dead = true;
+                isDead = true;
                 Damage();
             }
         }

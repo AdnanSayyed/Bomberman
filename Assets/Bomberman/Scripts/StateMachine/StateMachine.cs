@@ -17,7 +17,8 @@ public class StateMachine : MonoBehaviour
     }
 
     /// <summary>
-    /// Add the state which replace current state
+    /// Add the state which replace the current state
+    /// also calling initialize function of next state
     /// </summary>
     /// <param name="state">state to add</param>
     public void AddState(State state)

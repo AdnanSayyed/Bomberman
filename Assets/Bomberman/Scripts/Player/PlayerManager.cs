@@ -9,11 +9,17 @@ namespace PlayerSystem
     /// </summary>
     public class PlayerManager
     {
+        #region private fields
+
         private PlayerController playerController;
         private Player playerPrefab;
         private BombController bombPrefab;
         private LevelManager levelManager;
         private GameManager gameManager;
+
+        #endregion
+
+        #region constructors
 
         public PlayerManager(Player playerPrefab, BombController bombPrefab, GameManager gameManager)
         {
@@ -22,6 +28,8 @@ namespace PlayerSystem
             this.bombPrefab = bombPrefab;
             gameManager.restartGame += RestartGame;
         }
+
+        #endregion
 
         ~PlayerManager()
         {
@@ -49,11 +57,7 @@ namespace PlayerSystem
             }
         }
 
-        public GameObject GetPlayer()
-        {
-            return playerController.GetPlayer.gameObject;
-        }
-
+        
         public void SetLevelManager(LevelManager levelManager)
         {
             this.levelManager = levelManager;

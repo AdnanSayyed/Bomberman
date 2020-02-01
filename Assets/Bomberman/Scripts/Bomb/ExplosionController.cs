@@ -8,14 +8,24 @@ using Common;
 /// </summary>
 public class ExplosionController : MonoBehaviour
 {
+    #region Visible in Inspector fields
+
+    [Tooltip("Explosion collider ref")]
     [SerializeField] private Collider2D colliderRef;
-    float spawnTime = 0;
+
+    [Tooltip ("Timer after which explosion destroys")]
+    [SerializeField] private float ExplosionObjDestroyTimer = 0.4f;
+
+    #endregion
 
     private void Start()
     {
-        Invoke("DestroyObj", 0.4f);
+        Invoke("DestroyObj", ExplosionObjDestroyTimer);
     }
 
+    /// <summary>
+    /// Removes explosion
+    /// </summary>
     void DestroyObj()
     {
         Destroy(gameObject);

@@ -7,11 +7,20 @@ using Common;
 /// </summary>
 public class BombController : MonoBehaviour
 {
-    LevelManager levelManager;
+    #region Visible in Inspector fields
 
+    [Tooltip("Area affecting by explosion")]
     [SerializeField] private int explosionArea = 0;
+
+    [Tooltip("Explosion effect gameobject")]
     [SerializeField] private GameObject explosionObj;
+
+    [Tooltip("Time to explosion")]
     [SerializeField] private int explosionTime = 3;
+
+    #endregion
+
+    LevelManager levelManager;
 
     // Start is called before the first frame update
     void Start()
@@ -22,11 +31,12 @@ public class BombController : MonoBehaviour
 
     private void OnDisable()
     {
-        GameManager.Instance.restartGame -= RestartGame;
+        if(GameManager.Instance!=null)
+            GameManager.Instance.restartGame -= RestartGame;
     }
 
     /// <summary>
-    /// What happens when game restarts
+    /// Destroys if present at the time of restart game
     /// </summary>
     void RestartGame()
     {
@@ -39,6 +49,9 @@ public class BombController : MonoBehaviour
         this.levelManager.FillGrid(transform.position, this.gameObject);
     }
 
+    /// <summary>
+    /// areas where explosion will affect
+    /// </summary>
     void ExplodeBomb()
     {
         ExplodeCell(transform.position, 5, Vector3.zero);
@@ -51,11 +64,17 @@ public class BombController : MonoBehaviour
         Destroy(gameObject);
     }
 
+    /// <summary>
+    /// Cell to explode
+    /// </summary>
+    /// <param name="position">start pos</param>
+    /// <param name="areaCovered">area to be covered</param>
+    /// <param name="explosionDirection">direction of explosion</param>
     void ExplodeCell(Vector3 position, int areaCovered , Vector3 explosionDirection)
     {
         int area = areaCovered;
         Vector2 targetPos = position + explosionDirection;
-        GameObject obj = levelManager.GetObjAtGrid(targetPos);
+        GameObject obj = levelManager.GetObjAtGrid(targetPos); //gives obj at that pos
 
         area++;
         if (obj != null)
@@ -63,8 +82,8 @@ public class BombController : MonoBehaviour
             if (obj.GetComponent<FixedBlock>() != null) return;
             else
             {
-                Instantiate(explosionObj, targetPos, Quaternion.identity);
-                levelManager.EmptyGrid(position);
+                Instantiate(explosionObj, targetPos, Quaternion.identity); //explosion prefab at target pos
+                levelManager.EmptyGrid(position); //remove grid from that pos
 
                 if (area < explosionArea)
                 {
@@ -74,6 +93,7 @@ public class BombController : MonoBehaviour
         }
         else
         {
+            //explosion at empty area, wont affect any object
             Instantiate(explosionObj, targetPos, Quaternion.identity);
             if (area < explosionArea)
             {

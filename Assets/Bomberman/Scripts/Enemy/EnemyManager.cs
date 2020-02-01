@@ -10,11 +10,17 @@ namespace EnemySystem
     /// </summary>
     public class EnemyManager 
     {
+        #region private fields
+
         private List<Enemy> enemies;
         private LevelManager levelManager;
         private Enemy enemyPrefab;
         private GameManager gameManager;
         private Transform enemyParent;
+
+        #endregion
+
+        #region constructors
 
         public EnemyManager(Enemy enemyPrefab, GameManager gameManager,Transform enemyParent)
         {
@@ -25,13 +31,16 @@ namespace EnemySystem
             this.gameManager.restartGame += ResetEnemyList;
         }
 
+        #endregion
+
+
         ~EnemyManager()
         {
             this.gameManager.restartGame -= ResetEnemyList;
         }
 
         /// <summary>
-        /// Destroy all enemies when restart the game
+        /// Destroy all enemies when restarting the game
         /// </summary>
         void ResetEnemyList()
         {
@@ -49,7 +58,7 @@ namespace EnemySystem
         }
 
         /// <summary>
-        /// spawns enemy
+        /// spawns an enemy
         /// </summary>
         /// <param name="pos"> position to spawn</param>
         public void SpawnEnemy(Vector3 pos)
@@ -69,6 +78,7 @@ namespace EnemySystem
             gameManager.UpdateScore();
             if (enemies.Count <= 0)
             {
+                //won the game
                 gameManager.SetGameResult(true);
                 return;
             }

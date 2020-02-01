@@ -13,32 +13,43 @@ namespace LevelSystem
     public class LevelController
     {
         public GameObject[,] gridArray;
-        private List<Vector2> emptyGridList;
-        private int edgeCount = 2;
-        private int gridWidth = 15, gridHeight = 11, enemyCount;
+
+        #region private fields
+
+        private List<Vector2> emptyGrid;
+        private int extraEdgeGrids = 2; 
+        private int gridWidth = 15, gridHeight = 10, enemyCount;
 
         private FixedBlock fixedBlockPref;
-        private WeakBlock breakableBlockPref;
+        private WeakBlock weakBlockPref;
         private GameObject levelHolder;
         private EnemyManager enemyManager;
 
         PlayerManager playerManager;
         LevelManager levelManager;
 
-        public LevelController(FixedBlock fixedBlockPrefab, WeakBlock breakableBlockPrefab,
-                                EnemyManager enemyManager, PlayerManager playerManager
-                                , LevelManager levelManager)
+        private Vector3 levelHolderPos = Vector3.zero;
+
+        #endregion
+
+        #region constructors
+
+        public LevelController(FixedBlock fixedBlockPrefab, WeakBlock weakBlockPrefab,
+                                EnemyManager enemyManager, PlayerManager playerManager,
+                                LevelManager levelManager)
         {
             this.playerManager = playerManager;
             this.enemyManager = enemyManager;
             this.levelManager = levelManager;
             this.fixedBlockPref = fixedBlockPrefab;
-            this.breakableBlockPref = breakableBlockPrefab;
+            this.weakBlockPref = weakBlockPrefab;
             gridWidth = (int)GameManager.Instance.gridSize.x;
             gridHeight = (int)GameManager.Instance.gridSize.y;
             enemyCount = GameManager.Instance.enemyCount;
             GameManager.Instance.restartGame += RestartGame;
         }
+
+        #endregion
 
         ~LevelController()
         {
@@ -46,13 +57,14 @@ namespace LevelSystem
         }
 
         /// <summary>
-        /// Generates level on restart
+        /// Remove all current grids
+        /// ReGenerates level on restart
         /// </summary>
         void RestartGame()
         {
-            for (int i = 0; i < gridWidth + edgeCount; i++)
+            for (int i = 0; i < gridWidth + extraEdgeGrids; i++)
             {
-                for (int j = 0; j < gridHeight + edgeCount; j++)
+                for (int j = 0; j < gridHeight + extraEdgeGrids; j++)
                 {
                     if (gridArray[i, j] != null)
                     {
@@ -73,71 +85,82 @@ namespace LevelSystem
         /// </summary>
         public void GenerateLevel()
         {
-            emptyGridList = new List<Vector2>();
-            gridArray = new GameObject[gridWidth + edgeCount, gridHeight + edgeCount];
+            emptyGrid = new List<Vector2>();
+            gridArray = new GameObject[gridWidth + extraEdgeGrids, gridHeight + extraEdgeGrids];
             if (levelHolder == null)
                 levelHolder = new GameObject();
-            levelHolder.transform.position = Vector3.zero;
+            levelHolder.transform.position = levelHolderPos;
             levelHolder.name = "LevelHolder";
 
             GenerateGrid();
             GenerateEdgeBoarder();
-            GenerateFixedBlock();
+            SpawnFixedBlocks();
             SpawnPlayer();
-            GenerateBreakableBlock();
+            SpawnWeakBlocks();
             SpawnEnemies();
 
-            emptyGridList.Clear();
+            emptyGrid.Clear();
         }
 
         void GenerateGrid()
         {
-            for (int i = 0; i < gridWidth + edgeCount; i++)
+            for (int i = 0; i < gridWidth + extraEdgeGrids; i++)
             {
-                for (int j = 0; j < gridHeight + edgeCount; j++)
+                for (int j = 0; j < gridHeight + extraEdgeGrids; j++)
                 {
                     Vector2 vector = new Vector2(i, j);
-                    emptyGridList.Add(vector);
+                    emptyGrid.Add(vector);
                     gridArray[i, j] = null;
                 }
             }
         }
 
+        /// <summary>
+        /// Generaes blocks on edge(outer)
+        /// </summary>
         void GenerateEdgeBoarder()
         {
-            for (int i = 0; i < gridHeight + edgeCount; i++)
+
+            for (int i = 0; i < gridHeight + extraEdgeGrids; i++)
             {
                 Edge(new Vector2(0, i));
-                Edge(new Vector2(gridWidth + edgeCount - 1, i));
+                Edge(new Vector2(gridWidth + extraEdgeGrids - 1, i));
             }
 
-            for (int i = 1; i < gridWidth + edgeCount - 1; i++)
+            for (int i = 1; i < gridWidth + extraEdgeGrids - 1; i++)
             {
                 Edge(new Vector2(i, 0));
-                Edge(new Vector2(i, gridHeight + edgeCount - 1));
+                Edge(new Vector2(i, gridHeight + extraEdgeGrids - 1));
             }
         }
 
+        /// <summary>
+        /// Spawns fixedblcoks on edge
+        /// </summary>
+        /// <param name="pos">spawn pos</param>
         void Edge(Vector2 pos)
         {
             GameObject fixedBlock = Object.Instantiate(fixedBlockPref.gameObject, pos, Quaternion.identity);
             fixedBlock.transform.SetParent(levelHolder.transform);
             fixedBlock.name = "Edge[" + pos.x + "," + pos.y + "]";
-            emptyGridList.Remove(pos);
+            emptyGrid.Remove(pos);
             gridArray[(int)pos.x, (int)pos.y] = fixedBlock;
         }
 
-        void GenerateFixedBlock()
+        /// <summary>
+        /// Spawns fixed blocks inside edge blocks (inner)
+        /// </summary>
+        void SpawnFixedBlocks()
         {
-            for (int i = edgeCount; i < gridWidth; i += 2)
+            for (int i = extraEdgeGrids; i < gridWidth; i += 2)
             {
-                for (int j = edgeCount; j < gridHeight; j += 2)
+                for (int j = extraEdgeGrids; j < gridHeight; j += 2)
                 {
                     Vector2 vector = new Vector2(i, j);
                     GameObject fixedBlock = Object.Instantiate(fixedBlockPref.gameObject, vector, Quaternion.identity);
                     fixedBlock.transform.SetParent(levelHolder.transform);
                     fixedBlock.name = "Fixed[" + vector.x + "," + vector.y + "]";
-                    emptyGridList.Remove(vector);
+                    emptyGrid.Remove(vector);
                     gridArray[(int)vector.x, (int)vector.y] = fixedBlock;
                 }
             }
@@ -147,31 +170,34 @@ namespace LevelSystem
         {
             Vector2 spawnPos = new Vector2(1, gridHeight);
             playerManager.SpawnPlayer(spawnPos);
-            emptyGridList.Remove(spawnPos);
+            emptyGrid.Remove(spawnPos);
 
             for (int i = 1; i < 4; i++)
             {
                 for (int j = gridHeight; j > gridHeight - 3; j--)
                 {
                     Vector2 tempVector = new Vector2(i, j);
-                    emptyGridList.Remove(tempVector);
+                    emptyGrid.Remove(tempVector);
                 }
             }
         }
 
-        void GenerateBreakableBlock()
+        /// <summary>
+        /// Spawns weak blocks 
+        /// </summary>
+        void SpawnWeakBlocks()
         {
-            int val = Random.Range(Mathf.CeilToInt(emptyGridList.Count / 6), Mathf.CeilToInt(emptyGridList.Count / 3));
+            int val = Random.Range(Mathf.CeilToInt(emptyGrid.Count / 6), Mathf.CeilToInt(emptyGrid.Count / 3));
             for (int i = 0; i < val; i++)
             {
-                int k = Random.Range(0, emptyGridList.Count);
-                Vector2 vector = emptyGridList[k];
-                GameObject breakableBlock = Object.Instantiate(breakableBlockPref.gameObject, vector, Quaternion.identity);
-                breakableBlock.transform.SetParent(levelHolder.transform);
-                breakableBlock.name = "Breakable[" + vector.x + "," + vector.y + "]";
-                breakableBlock.GetComponent<WeakBlock>().SetLevelManager(levelManager);
-                emptyGridList.RemoveAt(k);
-                gridArray[(int)vector.x, (int)vector.y] = breakableBlock;
+                int k = Random.Range(0, emptyGrid.Count);
+                Vector2 vector = emptyGrid[k];
+                GameObject weakBlocks = Object.Instantiate(weakBlockPref.gameObject, vector, Quaternion.identity);
+                weakBlocks.transform.SetParent(levelHolder.transform);
+                weakBlocks.name = "Weak[" + vector.x + "," + vector.y + "]";
+                weakBlocks.GetComponent<WeakBlock>().SetLevelManager(levelManager);
+                emptyGrid.RemoveAt(k);
+                gridArray[(int)vector.x, (int)vector.y] = weakBlocks;
             }
         }
 
@@ -179,10 +205,10 @@ namespace LevelSystem
         {
             for (int i = 0; i < enemyCount; i++)
             {
-                int k = Random.Range(0, emptyGridList.Count);
-                Vector2 vector = emptyGridList[k];
+                int k = Random.Range(0, emptyGrid.Count);
+                Vector2 vector = emptyGrid[k];
                 enemyManager.SpawnEnemy(vector);
-                emptyGridList.RemoveAt(k);
+                emptyGrid.RemoveAt(k);
             }
         }
     }

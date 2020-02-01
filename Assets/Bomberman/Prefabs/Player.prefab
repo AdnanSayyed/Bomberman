@@ -47,8 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 5
-  myBody: {fileID: 7655569672729833636}
-  playerMainTransform: {fileID: 6854928996737190998}
+  playerRigidbody: {fileID: 7655569672729833636}
   playerAnimator: {fileID: 4635304649466688976}
 --- !u!50 &7655569672729833636
 Rigidbody2D:

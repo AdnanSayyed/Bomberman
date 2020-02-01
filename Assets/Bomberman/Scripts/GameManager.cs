@@ -17,39 +17,53 @@ namespace Common
         public event Action updateScore;
         public event Action restartGame;
 
+        #region Visible in Inspector fields
 
-        [Range(1, 10),Header("Enem Count between 1 to 10")]
+        [Header("Enemy")]
+
+        [Range(1, 10)]
         public int enemyCount;
-
-        [Header("Game grid dimensions")]
-        public Vector2 gridSize;
-
-        [Tooltip("UI controller")]
-        public UIController uiController;
 
         [Tooltip("Enemy Prefab")]
         public Enemy enemyPrefab;
 
-        [Tooltip("Bomb Prefab")]
-        public BombController bombPrefab;
+        [Tooltip("Enemy Parent gameobject to spawn enemies in")]
+        [SerializeField] private Transform enemyParent;
 
-        [Tooltip("Player Prefab")]
-        public Player playerPrefab;
+
+        [Header("Level")]
+
+        [Tooltip("Grid dimensions")]
+        public Vector2 gridSize;
 
         [Tooltip("FixedBlock Prefab")]
         public FixedBlock fixedBlock;
 
-        [Tooltip("BreakableBlock Prefab")]
-        public WeakBlock breakableBlock;
+        [Tooltip("WeakBlock Prefab")]
+        public WeakBlock weakBlock;
 
-        [Tooltip("Enemy Parent gameobject to spawn enemies in")]
-        [SerializeField] private Transform enemyParent;
+        [Header("UI")]
+
+        [Tooltip("UI controller")]
+        public UIController uiController;
+
+        [Header("Bomb")]
+
+        [Tooltip("Bomb Prefab")]
+        public BombController bombPrefab;
+
+        [Header("Player")]
+
+        [Tooltip("Player Prefab")]
+        public Player playerPrefab;
+
+
 
        [HideInInspector] public LevelManager levelManager;
        [HideInInspector] public PlayerManager playerManager;
        [HideInInspector] public EnemyManager enemyManager;
 
-
+        #endregion
 
         void Start()
         {
@@ -57,18 +71,18 @@ namespace Common
                 Destroy(gameObject);
             else
                 Instance = this;
-
-            DontDestroyOnLoad(gameObject);
-
+                   
             uiController.SetGameManager(this);
 
             if (enemyParent == null)
             {
                 GameObject parentEnemy=new GameObject();
-                parentEnemy.name = "EnemyParentCreated";
+                parentEnemy.name = "Enemies";
                 parentEnemy.gameObject.transform.position = Vector3.zero;
                 enemyParent = parentEnemy.gameObject.transform;
             }
+
+            DontDestroyOnLoad(gameObject);
 
             //added menu state
             AddState(new MenuState());
@@ -95,27 +109,30 @@ namespace Common
         /// <summary>
         /// generates player,enemies and tiles
         /// </summary>
-        public void GenerateComponents()
+        public void CreateComponents()
         {
             playerManager = new PlayerManager(playerPrefab, bombPrefab, this);
             enemyManager = new EnemyManager(enemyPrefab, this, enemyParent);
-            levelManager = new LevelManager(fixedBlock, breakableBlock, enemyManager, playerManager);
+            levelManager = new LevelManager(fixedBlock, weakBlock, enemyManager, playerManager);
             enemyManager.SetLevelManager(levelManager);
         }
 
         /// <summary>
         /// sets game result
+        /// calling all registered methods to event
         /// </summary>
         /// <param name="gameWon"></param>
         public void SetGameResult(bool gameWon) => gameStatus?.Invoke(gameWon);
 
         /// <summary>
         /// updates score
+        /// calling all registered methods to the event
         /// </summary>
         public void UpdateScore() => updateScore?.Invoke();
 
         /// <summary>
         /// restarts game
+        /// calling all registered methods to the event
         /// </summary>
         public void RestartGame() => restartGame?.Invoke();
     }

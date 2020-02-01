@@ -11,9 +11,17 @@ namespace EnemySystem
     /// </summary>
     public class Enemy : MonoBehaviour , IDamage
     {
+        #region Visible in Inspector fields
+
+        [Tooltip("Enemy move speed")]
         [SerializeField] private float moveSpeed = 5f;
-        [SerializeField] private Transform enemySprite;
+
+        [Tooltip("Enemy animator ref")]
         [SerializeField] private Animator enemyAnimator;
+
+        #endregion
+
+        #region private fields
 
         LevelManager levelManager;
         Vector3 currentGrid, nextGrid;
@@ -22,6 +30,9 @@ namespace EnemySystem
         EnemyManager enemyManager;
         bool canMove, isStuck = true;
         WaitForSeconds waitTime = new WaitForSeconds(1f);
+
+        #endregion
+
 
         // Start is called before the first frame update
         void Start()
