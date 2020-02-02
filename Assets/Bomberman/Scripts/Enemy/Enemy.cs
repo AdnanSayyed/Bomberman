@@ -9,7 +9,7 @@ namespace EnemySystem
     /// <summary>
     /// Responsible for enemy movement,animations
     /// </summary>
-    public class Enemy : MonoBehaviour , IDamage
+    public class Enemy : MonoBehaviour, IDamage
     {
         #region Visible in Inspector fields
 
@@ -40,7 +40,7 @@ namespace EnemySystem
             startTime = Time.time;
             currentGrid = nextGrid = transform.position;
             canMove = CanMove();
-            if(canMove == true)
+            if (canMove == true)
             {
                 isStuck = false;
                 GetNextGrid();
@@ -74,6 +74,7 @@ namespace EnemySystem
             CheckAvailableDirection(Vector3.left);
             CheckAvailableDirection(Vector3.right);
 
+        
             if (gridPositions.Count > 0)
             {
                 return true;
@@ -97,6 +98,7 @@ namespace EnemySystem
             GameObject obj = levelManager.GetObjAtGrid(transform.position + direction);
             if (obj == null || obj.GetComponent<Enemy>() != null)
             {
+                //if direction is available add that pos in gridpos list
                 gridPositions.Add(transform.position + direction);
             }
         }
@@ -106,7 +108,7 @@ namespace EnemySystem
         /// </summary>
         void Move()
         {
-            if(Vector3.Distance(transform.position , nextGrid) > 0.1f)
+            if (Vector3.Distance(transform.position, nextGrid) > 0.1f)
             {
                 currentTime = Time.time;
                 float distanceCovered = (currentTime - startTime) * moveSpeed;
@@ -131,7 +133,7 @@ namespace EnemySystem
         {
             yield return waitTime;
 
-            if(CanMove())
+            if (CanMove())
             {
                 isStuck = false;
                 yield return null;
@@ -150,13 +152,13 @@ namespace EnemySystem
         /// <summary>
         /// updates the enemy sprite directions
         /// </summary>
-        /// <param name="startPos"></param>
-        /// <param name="endPos"></param>
+        /// <param name="startPos">current position</param>
+        /// <param name="endPos">next position</param>
         void UpdateSpriteDirection(Vector2 startPos, Vector2 endPos)
         {
             Vector2 diff = endPos - startPos;
             float zRot = Mathf.Atan2(diff.y, diff.x) * Mathf.Rad2Deg;
-            switch (zRot+90)
+            switch (zRot + 90)
             {
                 case 0:
                     enemyAnimator.Play("EnemyWalk_Front");
