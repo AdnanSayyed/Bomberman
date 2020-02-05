@@ -65,6 +65,10 @@ namespace EnemySystem
                 Move();
         }
 
+        /// <summary>
+        /// check for movement in all directions
+        /// </summary>
+        /// <returns></returns>
         bool CanMove()
         {
             gridPositions = new List<Vector3>();
@@ -82,6 +86,7 @@ namespace EnemySystem
             return false;
         }
 
+
         void GetNextGrid()
         {
             int val = Random.Range(0, gridPositions.Count);
@@ -91,8 +96,9 @@ namespace EnemySystem
 
         /// <summary>
         /// check for available movement direction
+        /// 
         /// </summary>
-        /// <param name="direction"></param>
+        /// <param name="direction">direction to check</param>
         private void CheckAvailableDirection(Vector3 direction)
         {
             GameObject obj = levelManager.GetObjAtGrid(transform.position + direction);
@@ -105,6 +111,7 @@ namespace EnemySystem
 
         /// <summary>
         /// enemy movement
+        /// continuously calling from update if can move
         /// </summary>
         void Move()
         {
@@ -129,6 +136,10 @@ namespace EnemySystem
             }
         }
 
+        /// <summary>
+        /// Running continueos to check for stuck
+        /// </summary>
+        /// <returns></returns>
         IEnumerator CheckForStuck()
         {
             yield return waitTime;
@@ -139,6 +150,7 @@ namespace EnemySystem
                 yield return null;
             }
 
+            //again starting same coroutine
             StartCoroutine(CheckForStuck());
         }
 
